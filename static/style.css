@@ -1,0 +1,41 @@
+.navbar {
+    padding: 25px 0 25px 20px;
+    margin-bottom: 0;
+}
+
+.jumbotron {
+    padding: 3%;
+}
+
+.new-buttons {
+    text-align: left;
+}
+
+.new-buttons .btn {
+    margin: 10px 0 10px 10px;
+}
+
+.lists {
+    margin: 3% 1%;
+}
+
+.card-titles {
+    text-align: left;
+}
+
+.add-button {
+    position: absolute;
+    right:30px;
+}
+
+.list-post {
+    margin: 1% 1%;
+}
+
+.list-form {
+    margin: 3% 1%;
+}
+
+.new-list-btn {
+    margin: 1% 3% 0;
+}

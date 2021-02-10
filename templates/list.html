@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}List{% endblock %}
+
+
+{% block content %}
+<div class="row lists">
+    <div class="col-lg-4 col-sm-12">
+        <div class="card card-primary">
+            <div class="card-header">
+                <h3>TODO<button type="button" class="btn btn-primary add-button" data-toggle="modal" data-target="#addFormModal">Add</button></h3>
+            </div>
+            <div class="card-body"><p>Step 1</p></div>
+        </div>
+    </div>
+    <div class="col-lg-4 col-sm-12">
+        <div class="card card-primary">
+            <div class="card-header"><h3>In Progress</h3></div>
+            <div class="card-body"><p>Step 1</p></div>
+        </div>
+    </div>
+    <div class="col-lg-4 col-sm-12">
+        <div class="card card-primary">
+            <div class="card-header"><h3>Finished!</h3></div>
+            <div class="card-body"><p>Step 1</p></div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal Form -->
+<div class="modal fade" id="addFormModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="exampleModalLabel">Add Item</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form class="" action="index.html" method="post">
+          <div class="modal-body">
+            {{ form.csrf_token }}
+            {{ form.task_name.label }} <br>
+            {{ form.task_name(size=50) }} <br>
+            {{ form.task_description.label }} <br>
+            {{ form.task_description(cols="75", rows="5", style="resize: none") }}
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <input type="submit" value="Add" class="btn btn-primary">
+          </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+{% endblock %}
