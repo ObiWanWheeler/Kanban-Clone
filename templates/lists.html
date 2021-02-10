@@ -20,9 +20,8 @@
     </div>
 </div>
 
-{% for list in lists %}
-
-    <div class="row list-post">
+<div class="row list-post">
+    {% for list in lists %}
         <div class="col-lg-4 col-md-6 col-sm-12">
             <div class="card" href="{{ url_for('list', list_id=list.id) }}">
                 <a class="list-link" href="{{ url_for('list', list_id=list.id) }}"></a>
@@ -37,8 +36,8 @@
                 <div class="card-footer text-muted">Last Edited: {{ list.last_edited.strftime("%Y-%m-%d") }}</div>
             </div>
         </div>
-    </div>
-{% endfor %}
+    {% endfor %}
+</div>
 
 
 <div class="modal fade" id="addListModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -50,7 +49,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form class="list-form" action="{{ url_for('lists') }}" method="post" novalidate=True>
+            <form class="list-form" action="{{ url_for('add_list') }}" method="post">
                 <div class="modal-body">
                     {{ form.csrf_token }}
                     {{ form.list_name.label }} <br>

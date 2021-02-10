@@ -58,10 +58,16 @@ def home():
     return render_template('index.html')
 
 
-@app.route("/lists", methods=["GET", "POST"])
+@app.route("/lists", methods=["GET"])
 def lists():
-    form = NewListForm()
     all_lists = db.session.query(TODOList).all()
+    form = NewListForm()
+    return render_template("lists.html", form=form, lists=all_lists)
+
+
+@app.route("/add-list", methods=["POST"])
+def add_list():
+    form = NewListForm()
     if form.validate_on_submit():
         new_list = TODOList(list_name=form.list_name.data, list_summary=form.list_summary.data)
 
@@ -80,9 +86,8 @@ def lists():
         db.session.add(new_finished)
 
         db.session.commit()
-        return redirect(url_for("list", list_id=1))
-    else:
-        return render_template("lists.html", form=form, lists=all_lists)
+        return redirect(url_for("list", list_id=new_list.id))
+    return redirect(url_for("lists"))
 
 
 @app.route("/lists/<int:list_id>", methods=["GET"])
