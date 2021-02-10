@@ -49,11 +49,8 @@ class ListColumn(db.Model):
 class ListItem(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     parent_list_id = db.Column(db.Integer, db.ForeignKey("listcolumn.id"), nullable=False)
-    task_name = db.Column(db.String(200), nullable=False)
+    task_name = db.Column(db.String(200), nullable=False, unique=True)
     task_description = db.Column(db.String(200), nullable=False)
-
-
-db.create_all()
 
 
 @app.route('/')
@@ -90,25 +87,27 @@ def lists():
 
 @app.route("/lists/<int:list_id>", methods=["GET", "POST"])
 def list(list_id):
-    form = ListItemForm()
     requested_list = db.session.query(TODOList).get(list_id)
-    if form.validate_on_submit():
-        column_to_append_to = None
-        print(form.column.data)
-        for list in requested_list.sub_lists:
-            print(list.list_type)
-            if list.list_type == form.column.data:
-                column_to_append_to = list
-                break
-        if column_to_append_to is not None:
-            print("here")
-            new_item = ListItem(parent_list_id=column_to_append_to.id,
-                                task_description=form.task_description.data, task_name=form.task_name.data)
-            db.session.add(new_item)
-            db.session.commit()
+    if requested_list is not None:
+        form = ListItemForm()
+        if form.validate_on_submit():
+            column_to_append_to = None
+            print(form.column.data)
+            for list in requested_list.sub_lists:
+                print(list.list_type)
+                if list.list_type == form.column.data:
+                    column_to_append_to = list
+                    break
+            if column_to_append_to is not None:
+                print("here")
+                new_item = ListItem(parent_list_id=column_to_append_to.id,
+                                    task_description=form.task_description.data, task_name=form.task_name.data)
+                db.session.add(new_item)
+                db.session.commit()
+
         return render_template("list.html", form=form, list=requested_list)
     else:
-        return render_template("list.html", form=form, list=requested_list)
+        return redirect(url_for("lists"))
 
 
 if __name__ == '__main__':

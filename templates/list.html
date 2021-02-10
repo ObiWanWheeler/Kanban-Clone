@@ -6,61 +6,31 @@
 
 {% block content %}
 <div class="row lists">
+    {% for sublist in list.sub_lists %}
     <div class="col-lg-4 col-sm-12">
         <div class="card card-primary">
             <div class="card-header">
-                <h3>TODO
+                <h3>{{ sublist.list_type.upper() }}
+                    {% if sublist.list_type == "todo" %}
                     <button type="button" class="btn btn-primary add-button" data-toggle="modal" data-target="#addFormModal">
                         Add
                     </button>
+                    {% endif %}
                 </h3>
-
             </div>
             <div class="card-body">
-                {% for sublist in list.sub_lists %}
-                        {% if sublist.list_type == "todo" %}
-                        <ul>
-                            {% for item in sublist.list_items %}
-                                     <li><em>{{item.task_name}}</em><br>{{item.task_description}}</li>
-                            {% endfor %}
-                        </ul>
-                        {% endif %}
-                {% endfor %}
+                <ul>
+                    {% for item in sublist.list_items %}
+                         <li>
+                             <em>{{item.task_name}}</em><br>
+                             <p>{{item.task_description}}<i class="far fa-times-circle"></i></p>
+                         </li>
+                    {% endfor %}
+                </ul>
             </div>
         </div>
     </div>
-    <div class="col-lg-4 col-sm-12">
-        <div class="card card-primary">
-            <div class="card-header"><h3>In Progress</h3></div>
-            <div class="card-body">
-                {% for sublist in list.sub_lists %}
-                        {% if sublist.list_type == "wip" %}
-                        <ul>
-                            {% for item in sublist.list_items %}
-                                     <li><em>{{item.task_name}}</em><br>{{item.task_description}}</li>
-                            {% endfor %}
-                        </ul>
-                        {% endif %}
-                {% endfor %}
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-4 col-sm-12">
-        <div class="card card-primary">
-            <div class="card-header"><h3>Finished!</h3></div>
-            <div class="card-body">
-                {% for sublist in list.sub_lists %}
-                        {% if sublist.list_type == "finished" %}
-                        <ul>
-                            {% for item in sublist.list_items %}
-                                     <li><em>{{item.task_name}}</em><br>{{item.task_description}}</li>
-                            {% endfor %}
-                        </ul>
-                        {% endif %}
-                {% endfor %}
-            </div>
-        </div>
-    </div>
+    {% endfor %}
 </div>
 
 
@@ -74,6 +44,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
+
       <form class="" action="{{ url_for('list', list_id=list.id) }}" method="post">
           <div class="modal-body">
             {{ form.csrf_token }}
