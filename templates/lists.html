@@ -20,17 +20,26 @@
     </div>
 </div>
 
-<div class="row list-post">
-    <div class="col-lg-4 col-md-6 col-sm-12">
-        <div class="card">
-            <div class="card-header"><h3>List 1</h3></div>
-            <div class="card-body">
-                <p>TODO: 5<br>In Progress: 6<br>Finished: 7</p>
+{% for list in lists %}
+
+    <div class="row list-post">
+        <div class="col-lg-4 col-md-6 col-sm-12">
+            <div class="card" href="{{ url_for('list', list_id=list.id) }}">
+                <a class="list-link" href="{{ url_for('list', list_id=list.id) }}"></a>
+                <div class="card-header"><h3>{{list.list_name}}</h3>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ list.list_summary }}</h6>
+                </div>
+                <div class="card-body">
+                    {% for sublist in list.sub_lists %}
+                            <p class="card-text">{{ sublist.list_type.upper() }} : {{ sublist.list_items | length }}</p>
+                    {% endfor %}
+                </div>
+                <div class="card-footer text-muted">Last Edited: {{ list.last_edited.strftime("%Y-%m-%d") }}</div>
             </div>
-            <div class="card-footer text-muted">edited 11/12/03</div>
         </div>
     </div>
-</div>
+{% endfor %}
+
 
 <div class="modal fade" id="addListModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">

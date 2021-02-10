@@ -23,7 +23,13 @@
                     {% for item in sublist.list_items %}
                          <li>
                              <em>{{item.task_name}}</em><br>
-                             <p>{{item.task_description}}<i class="far fa-times-circle"></i></p>
+                             <p>{{item.task_description}}
+                                 <form action="{{ url_for('delete_item', list_id=list.id, item_id=item.id) }}">
+                                     <button type="submit" class="btn btn-sm btn-outline-warning">
+                                        <i class="far fa-times-circle "></i>
+                                     </button>
+                                 </form>
+                             </p>
                          </li>
                     {% endfor %}
                 </ul>
@@ -45,7 +51,7 @@
         </button>
       </div>
 
-      <form class="" action="{{ url_for('list', list_id=list.id) }}" method="post">
+      <form class="" action="{{ url_for('add_item', list_id=list.id) }}" method="post">
           <div class="modal-body">
             {{ form.csrf_token }}
             {{ form.task_name.label }} <br>

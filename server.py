@@ -61,7 +61,7 @@ def home():
 @app.route("/lists", methods=["GET", "POST"])
 def lists():
     form = NewListForm()
-
+    all_lists = db.session.query(TODOList).all()
     if form.validate_on_submit():
         new_list = TODOList(list_name=form.list_name.data, list_summary=form.list_summary.data)
 
@@ -82,32 +82,52 @@ def lists():
         db.session.commit()
         return redirect(url_for("list", list_id=1))
     else:
-        return render_template("lists.html", form=form)
+        return render_template("lists.html", form=form, lists=all_lists)
 
 
-@app.route("/lists/<int:list_id>", methods=["GET", "POST"])
+@app.route("/lists/<int:list_id>", methods=["GET"])
 def list(list_id):
     requested_list = db.session.query(TODOList).get(list_id)
     if requested_list is not None:
         form = ListItemForm()
-        if form.validate_on_submit():
-            column_to_append_to = None
-            print(form.column.data)
-            for list in requested_list.sub_lists:
-                print(list.list_type)
-                if list.list_type == form.column.data:
-                    column_to_append_to = list
-                    break
-            if column_to_append_to is not None:
-                print("here")
-                new_item = ListItem(parent_list_id=column_to_append_to.id,
-                                    task_description=form.task_description.data, task_name=form.task_name.data)
-                db.session.add(new_item)
-                db.session.commit()
-
         return render_template("list.html", form=form, list=requested_list)
     else:
         return redirect(url_for("lists"))
+
+
+@app.route("/add-item/<int:list_id>", methods=["POST"])
+def add_item(list_id):
+    form = ListItemForm()
+    list = db.session.query(TODOList).get(list_id)
+    if form.validate_on_submit():
+        column_to_append_to = None
+        print(form.column.data)
+        for list in list.sub_lists:
+            print(list.list_type)
+            if list.list_type == form.column.data:
+                column_to_append_to = list
+                break
+        if column_to_append_to is not None:
+            print("here")
+            new_item = ListItem(parent_list_id=column_to_append_to.id,
+                                task_description=form.task_description.data, task_name=form.task_name.data)
+            db.session.add(new_item)
+            db.session.commit()
+
+    return redirect(url_for("list", list_id=list_id))
+
+
+@app.route("/delete-item/<int:list_id>/<int:item_id>")
+def delete_item(item_id, list_id):
+    item_to_delete = db.session.query(ListItem).get(item_id)
+    db.session.delete(item_to_delete)
+    db.session.commit()
+    return redirect(url_for("list", list_id=list_id))
+
+
+@app.route("/edit-item/<int:list_id>/<int:item_id>")
+def edit_item(item_id, list_id):
+    item_to_edit = db.session.query(ListItem).get(item_id)
 
 
 if __name__ == '__main__':
