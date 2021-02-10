@@ -9,21 +9,56 @@
     <div class="col-lg-4 col-sm-12">
         <div class="card card-primary">
             <div class="card-header">
-                <h3>TODO<button type="button" class="btn btn-primary add-button" data-toggle="modal" data-target="#addFormModal">Add</button></h3>
+                <h3>TODO
+                    <button type="button" class="btn btn-primary add-button" data-toggle="modal" data-target="#addFormModal">
+                        Add
+                    </button>
+                </h3>
+
             </div>
-            <div class="card-body"><p>Step 1</p></div>
+            <div class="card-body">
+                {% for sublist in list.sub_lists %}
+                        {% if sublist.list_type == "todo" %}
+                        <ul>
+                            {% for item in sublist.list_items %}
+                                     <li><em>{{item.task_name}}</em><br>{{item.task_description}}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                {% endfor %}
+            </div>
         </div>
     </div>
     <div class="col-lg-4 col-sm-12">
         <div class="card card-primary">
             <div class="card-header"><h3>In Progress</h3></div>
-            <div class="card-body"><p>Step 1</p></div>
+            <div class="card-body">
+                {% for sublist in list.sub_lists %}
+                        {% if sublist.list_type == "wip" %}
+                        <ul>
+                            {% for item in sublist.list_items %}
+                                     <li><em>{{item.task_name}}</em><br>{{item.task_description}}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                {% endfor %}
+            </div>
         </div>
     </div>
     <div class="col-lg-4 col-sm-12">
         <div class="card card-primary">
             <div class="card-header"><h3>Finished!</h3></div>
-            <div class="card-body"><p>Step 1</p></div>
+            <div class="card-body">
+                {% for sublist in list.sub_lists %}
+                        {% if sublist.list_type == "finished" %}
+                        <ul>
+                            {% for item in sublist.list_items %}
+                                     <li><em>{{item.task_name}}</em><br>{{item.task_description}}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                {% endfor %}
+            </div>
         </div>
     </div>
 </div>
@@ -39,13 +74,15 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form class="" action="index.html" method="post">
+      <form class="" action="{{ url_for('list', list_id=list.id) }}" method="post">
           <div class="modal-body">
             {{ form.csrf_token }}
             {{ form.task_name.label }} <br>
             {{ form.task_name(size=50) }} <br>
             {{ form.task_description.label }} <br>
-            {{ form.task_description(cols="75", rows="5", style="resize: none") }}
+            {{ form.task_description(cols="63", rows="5", style="resize: none") }}
+            {{ form.column.label }} <br>
+            {{ form.column(style="width: 60%") }}
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

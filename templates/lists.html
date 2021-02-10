@@ -59,13 +59,13 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form class="list-form" action="{{ url_for('add_list') }}" method="post">
+            <form class="list-form" action="{{ url_for('lists') }}" method="post" novalidate=True>
                 <div class="modal-body">
                     {{ form.csrf_token }}
                     {{ form.list_name.label }} <br>
                     {{ form.list_name(size=50) }} <br>
                     {{ form.list_summary.label }} <br>
-                    {{ form.list_summary(cols="75", rows="5", style="resize: none") }} <br>
+                    {{ form.list_summary(cols="63", rows="5", style="resize: none") }} <br>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
