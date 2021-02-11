@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}Edit {{ list.list_name }}{% endblock %}
+
+
+{% block content %}
+<form class="edit-form" style="padding:2% 3%;" method="post">
+      {{ form.csrf_token }}
+      {{ form.task_name.label }} <br>
+      {{ form.task_name(size=50) }} <br>
+      {{ form.task_description.label }} <br>
+      {{ form.task_description(cols="63", rows="5", style="resize: none") }}
+      {{ form.column.label }} <br>
+      {{ form.column(style="width: 60%") }} <br>
+      <input type="submit" style="margin: 1% 0;" value="Save" class="btn save-btn btn-primary">
+</form>
+{% endblock %}

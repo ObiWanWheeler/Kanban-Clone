@@ -53,6 +53,20 @@
         filter: alpha(opacity=1); /* Fix to make div clickable in IE */
 }
 
-.delete-btn {
+.item-btn {
     padding: 1%;
+    display: inline-block;
+}
+
+.save-btn {
+    padding: 1%;
+    margin: 1%;
+}
+
+.edit-form {
+    padding: 3%;
+}
+
+.list-title .jumbotron {
+    padding: 1% 2%;
 }
